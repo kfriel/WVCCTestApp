@@ -1,0 +1,5 @@
+serverpath:R04PHSSQL30\SQLB
+serveruserid:username
+serveruserpw:password
+wvccdatabase:WVCCDev
+NumRecsInList:25

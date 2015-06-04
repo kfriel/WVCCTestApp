@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IronGitHub</name>
+    </assembly>
+    <members>
+        <member name="M:IronGitHub.Apis.GistsApi.New(System.Collections.Generic.IDictionary{System.String,System.String},System.String,System.Boolean)">
+            <summary>
+            Create a gist
+            </summary>
+            <param name="files">Files that make up this gist. The key of which 
+            should be a required string filename and the value another 
+            required hash with parameters</param>
+            <param name="description">(Optional)</param>
+            <param name="public">(Optional)</param>
+            <returns>The new Gist</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.GistsApi.New(System.Collections.Generic.IDictionary{System.String,IronGitHub.Entities.Gist.NewGistPost.NewGistFile},System.String,System.Boolean)">
+            <summary>
+            Create a gist
+            </summary>
+            <param name="files">Files that make up this gist. The key of which 
+            should be a required string filename and the value another 
+            required hash with parameters</param>
+            <param name="description">(Optional)</param>
+            <param name="public">(Optional)</param>
+            <returns>The new Gist</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.GistsApi.New(IronGitHub.Entities.Gist.NewGistPost)">
+            <summary>
+            Create a gist
+            </summary>
+            <param name="newGist">The new Gist.NewGistPost to create</param>
+            <returns>The new Gist</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.GistsApi.Get(System.Int64)">
+            <summary>
+            Get a single gist
+            </summary>
+            <param name="id">The Id of the Gist to get</param>
+            <returns>The Gist</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.GistsApi.Delete(IronGitHub.Entities.Gist)">
+            <summary>
+            Delete a gist
+            </summary>
+            <param name="gist">The Gist to delete</param>
+            <returns>Void</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.GistsApi.Edit(IronGitHub.Entities.Gist.EditGistPost)">
+            <summary>
+            Edit a gist
+            </summary>
+            <param name="patch">The EditGistPost comprising the edits to be made</param>
+            <returns>The edited Gist</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.IssuesApi.Get">
+            <summary>
+            List all issues across all the authenticated user’s visible 
+            repositories including owned repositories, member repositories, 
+            and organization repositories.
+            </summary>
+            <returns>List of IssueItems</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.IssuesApi.GetForUser">
+            <summary>
+            List all issues across owned and member repositories for the 
+            authenticated user.
+            </summary>
+            <returns>List of IssueItems</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.IssuesApi.GetForUserOrganization(System.String)">
+            <summary>
+            List all issues for a given organization for the authenticated user.
+            </summary>
+            <param name="organization">Name of the organization for which to
+            retrieve issues for the authenticated user.</param>
+            <returns>List of IssueItems</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.IssuesApi.Get(System.String,System.String,System.Int32)">
+            <summary>
+            Get a single issue
+            </summary>
+            <param name="owner">Owner of the repository of the issue</param>
+            <param name="repo">Repository of the issue</param>
+            <param name="number">Issue number in the repository</param>
+            <returns>The Issue</returns>
+        </member>
+        <member name="T:IronGitHub.Apis.OrganizationsApi">
+            <summary>
+            Organizations API
+            
+            http://developer.github.com/v3/orgs/
+            </summary>
+        </member>
+        <member name="M:IronGitHub.Apis.OrganizationsApi.GetOrganization(System.String)">
+            <summary>
+            Get a single Organization
+            
+            /orgs/:org
+            </summary>
+            <returns>The authenticated User</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.OrganizationsApi.GetRepositories(System.String,System.Nullable{IronGitHub.Entities.RepositoryTypes})">
+            <summary>
+            Gets the repositories belonging to an Organization
+            
+            /orgs/:org/repos
+            </summary>
+            <returns>The repositories belonging to an Organization</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.RepositoriesApi.Get(System.String,System.String)">
+            <summary>
+            Get a Repository
+            </summary>
+            <param name="owner">The owner of the Repository to get</param>
+            <param name="repo">The Repository to get</param>
+            <returns>The Repository.  The parent and source objects are present 
+            when the repo is a fork. parent is the repo this repo was forked 
+            from, source is the ultimate source for the network.</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.RepositoriesApi.List(System.UInt32)">
+            <summary>
+            List all Repositories
+            </summary>
+            <param name="since">The integer ID of the last Repository that 
+            you’ve seen.</param>
+            <returns>This provides a dump of every repository, in the order 
+            that they were created.</returns>
+        </member>
+        <member name="T:IronGitHub.Apis.UsersApi">
+            <summary>
+            Users API
+            
+            Many of the resources on the users API provide a shortcut for getting 
+            information about the currently authenticated user. If a request URL 
+            does not include a :user parameter then the response will be for the 
+            logged in user (and you must pass authentication information with your 
+            request).
+            
+            http://developer.github.com/v3/users/
+            </summary>
+        </member>
+        <member name="M:IronGitHub.Apis.UsersApi.GetAuthenticatedUser">
+            <summary>
+            Get the authenticated user
+            
+            /user
+            </summary>
+            <returns>The authenticated User</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.UsersApi.Get(System.Int32)">
+            <summary>
+            Get a single user
+            
+            /users/:user
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IronGitHub.Apis.SearchApi">
+            <summary>
+            Search API
+            This is a listing of the Search API features from API v2 that have 
+            been ported to API v3. There should be no changes, other than the new 
+            URL and JSON output format.
+            http://developer.github.com/v3/search/
+            </summary>
+        </member>
+        <member name="M:IronGitHub.Apis.SearchApi.Users(System.String,System.Nullable{System.Int32},System.Nullable{IronGitHub.Entities.UserSorts},System.Nullable{IronGitHub.SortOrders})">
+            <summary>
+            Search users - Find users by keyword.
+            
+            /legacy/user/search/:keyword
+            </summary>
+            <param name="keyword">Keyword search parameters</param>
+            <param name="startPage">Optional Page number to fetch</param>
+            <param name="sort">Optional Sort field. One of followers, joined, 
+            or repositories. If not provided, results are sorted by best 
+            match.</param>
+            <param name="order">Optional Sort order if sort param is provided. One of asc or desc.</param>
+            <returns></returns>
+        </member>
+        <member name="M:IronGitHub.Apis.SearchApi.Repositories(System.String,System.String,System.Int32,System.Nullable{IronGitHub.Entities.RepositorySorts},System.Nullable{IronGitHub.SortOrders})">
+            <summary>
+            Search repositories - Find repositories by keyword. Note, this 
+            legacy method does not follow the v3 pagination pattern. This 
+            method returns up to 100 results per page and pages can be fetched 
+            using the startPage parameter.
+            
+            /legacy/repos/search/:keyword
+            </summary>
+            <param name="keyword">Search term</param>
+            <param name="language">Optional Filter results by language 
+            (https://github.com/languages)</param>
+            <param name="startPage">Optional Page number to fetch</param>
+            <param name="sort">Optional Sort field. One of stars, forks, or 
+            updated. If not provided, results are sorted by best match.</param>
+            <param name="order">Optional Sort order if sort param is provided. 
+            One of asc or desc.</param>
+            <returns>A Repository.RepositorySearchResults with the matching Repositories.</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.SearchApi.Issues(System.String,System.String,IronGitHub.IssueStates,System.String)">
+            <summary>
+            Search issues - Find issues by state and keyword.
+            
+            /legacy/issues/search/:owner/:repository/:state/:keyword
+            </summary>
+            <param name="owner">The owner of the repository in which to search for issues.</param>
+            <param name="repository">The repository in which to search for issues.</param>
+            <param name="state">open or closed </param>
+            <param name="keyword">Search term</param>
+            <returns>An Issue.IssueSearchResults with the matching Issues</returns>
+        </member>
+        <member name="M:IronGitHub.Apis.SearchApi.Email(System.String)">
+            <summary>
+            Email search - This API call is added for compatibility reasons 
+            only. There’s no guarantee that full email searches will always be 
+            available. The @ character in the address must be left unencoded. 
+            Searches only against public email addresses (as configured on the 
+            user’s GitHub profile).
+            
+            /legacy/user/email/:email
+            </summary>
+            <param name="email">Email address</param>
+            <returns>A User with the specified email address</returns>
+        </member>
+        <member name="F:IronGitHub.SortOrders.Asc">
+            <summary>
+            Ascending
+            </summary>
+        </member>
+        <member name="F:IronGitHub.SortOrders.Desc">
+            <summary>
+            Descending
+            </summary>
+        </member>
+    </members>
+</doc>

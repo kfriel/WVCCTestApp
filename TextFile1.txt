@@ -1,0 +1,28 @@
+//Create instance of Userinfo data if it does not exists
+            //if (MyUser == null) { UserInfo MyUser = new UserInfo(); }
+            //Create Server connection management object if it does not exist
+            //if (MySQLConnection == null) { SQLServer MySQLConnection = new SQLServer();
+                //SQLServe MySQLConnection = new SQLServer(); //create connection obj
+
+            //SQLServer MySQLConnection = new SQLServer();    //Create Server connection management object
+            //UserInfo MyUser = new UserInfo();               //Create instance of Userinfo data
+            //SQLServer MySQLConnection = new SQLServer();    //Create Server connection management object
+
+            //Test output
+            //Console.WriteLine();
+            //Console.WriteLine("My sql connectionis open - " + MySQLConnection.IsConnectionOpen()); //test
+            //MySQLConnection.MyServer("Connect");            // Connect to sql server
+            //Console.WriteLine("My sql connectionis open - " + MySQLConnection.IsConnectionOpen()); //test
+
+            //Console.WriteLine(MyUser.UserID);
+            //Console.WriteLine(MyUser.MachineName);
+            //Console.WriteLine(MyUser.SessionID);
+            //Console.WriteLine(MyUser.UserFName);
+            //Console.WriteLine(MyUser.UserLName);
+            //Console.WriteLine(MyUser.UserShift);
+            //Console.WriteLine(MyUser.LogedIn);
+
+            //MySQLConnection.MyServer("Disconnect");
+            //Console.WriteLine("My sql connectionis open - " + MySQLConnection.IsConnectionOpen());
+
+            //Console.ReadLine();                     //Pause Console so feedback can be reviewed

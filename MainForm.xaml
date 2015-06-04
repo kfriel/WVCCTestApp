@@ -1,0 +1,1028 @@
+﻿<Window x:Name="WVCCMainWindow" x:Class="WVCCTestApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WVCC Call Management" 
+        Height="750" 
+        Width="958" 
+        WindowStyle="ToolWindow" 
+        WindowStartupLocation="CenterScreen" Uid="MainWindow">
+    <Grid x:Name="Grid1" 
+          Margin="5,5,-8,-49" 
+          ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+          MinWidth="798" 
+          MinHeight="663" 
+          MaxWidth="1440" 
+          MaxHeight="900" 
+          RenderTransformOrigin="0.382,0.166">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="101*"/>
+            <RowDefinition Height="670*"/>
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" 
+                                 MappingMode="RelativeToBoundingBox" 
+                                 StartPoint="0.5,0">
+                <GradientStop Color="Black" 
+                              Offset="1"/>
+                <GradientStop Color="#FF5194F3"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <!-- Mode Control -->
+        <Border BorderBrush="Black" 
+                BorderThickness="1" 
+                HorizontalAlignment="Left" 
+                Height="58" 
+                Margin="22,6,0,0" 
+                VerticalAlignment="Top" 
+                Width="191"/>
+        <Label Content="Mode" 
+               HorizontalAlignment="Left" 
+               Margin="147,8,0,0" 
+               VerticalAlignment="Top" Height="23" Width="36"/>
+        <ComboBox x:Name="Mode" 
+                  HorizontalAlignment="Left" 
+                  Margin="27,10,0,0" 
+                  VerticalAlignment="Top" 
+                  Width="120"
+                  Loaded="Mode_menu_pl"
+                  SelectionChanged="Mode_SelectionChanged" 
+                  IsEditable="False" 
+                  ToolTip="Mode: Defaulted to &quot;Off Line&quot;. Please select the the tool mode you whish to work in." Height="21">
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="StaysOpenOnEdit" 
+                            Value="True"/>
+                    <Setter Property="IsDropDownOpen" 
+                            Value="False"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" 
+                                 Value="True">
+                            <Setter Property="IsDropDownOpen" 
+                                    Value="True"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Resources>
+        </ComboBox>
+        <!-- Assignment Control-->
+        <Label Content="Assignment" 
+               HorizontalAlignment="Left" 
+               Margin="147,33,0,0" 
+               VerticalAlignment="Top" Height="23" Width="66"/>
+        <ComboBox x:Name="Assignmentcbx" 
+                  HorizontalAlignment="Left" 
+                  Margin="27,30,0,0" 
+                  VerticalAlignment="Top" 
+                  Width="120" 
+                  Loaded="Assignment_menu_pl"
+                  SelectionChanged="Assignment_SelectionChanged" 
+                  BorderThickness="0,5,0,0" 
+                  IsReadOnly="True" Height="26">
+            <ComboBox.Resources>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="StaysOpenOnEdit" 
+                            Value="True"/>
+                    <Setter Property="IsDropDownOpen" 
+                            Value="False"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" 
+                                 Value="True">
+                            <Setter Property="IsDropDownOpen" 
+                                    Value="True"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Resources>
+        </ComboBox>
+        <!--Notification Box -->
+        <Border BorderBrush="Black" 
+                BorderThickness="1" 
+                HorizontalAlignment="Left" 
+                Height="50" 
+                Margin="688,6,0,0" 
+                VerticalAlignment="Top" 
+                Width="250">
+            <Label x:Name="NotifyMessagelb" 
+                   Content="{Binding Path=NotifyMessage, UpdateSourceTrigger=PropertyChanged}" 
+                   Visibility="Hidden"
+                   HorizontalAlignment="Center" 
+                   Height="39" 
+                   VerticalAlignment="Center" 
+                   Width="239" 
+                   FontWeight="Bold" 
+                   FontSize="18" 
+                   VerticalContentAlignment="Center" 
+                   HorizontalContentAlignment="Center" 
+                   Foreground="#FF26EA07"/>
+        </Border>
+        <!-- Call List Management-->
+        <ListView 
+            Name="ListView"
+            ItemsSource = "{Binding}"
+            SelectionChanged="CallListSlChnd"
+            SelectedIndex="-1" 
+            SelectionMode="Single"
+            HorizontalAlignment="Left" 
+            Height="237" 
+            Margin="22,66,0,0" 
+            VerticalAlignment="Top" 
+            Width="191" 
+            Cursor="Hand" 
+            BorderThickness="3" 
+            SnapsToDevicePixels="True" 
+            ToolTip="Select Veteran to call." 
+            Grid.RowSpan="2">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn 
+                        x:Name="LVWVCCID" 
+                        Header="ID" 
+                        Width="0"
+                        DisplayMemberBinding="{Binding WVCCID}"/>
+                    <GridViewColumn 
+                        x:Name="First" 
+                        Header="First" 
+                        Width="57"
+                        DisplayMemberBinding="{Binding FName}"/>
+                    <GridViewColumn 
+                        x:Name="Last" 
+                        Header="Last" 
+                        Width="67"
+                        DisplayMemberBinding="{Binding LName}"/>
+                    <GridViewColumn 
+                        x:Name="TZ" 
+                        Header="TZ" 
+                        Width="32"
+                         DisplayMemberBinding="{Binding TZ}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content="Reset" 
+                HorizontalAlignment="Left" 
+                Margin="22,208,0,0" 
+                VerticalAlignment="Top" 
+                Width="56" Grid.Row="1"
+                Click="ListReset" Height="20"/>
+        <Button Content="New" 
+                HorizontalAlignment="Left" 
+                Margin="157,208,0,0" 
+                VerticalAlignment="Top" 
+                Width="56" 
+                Grid.Row="1"
+                Click="ListNew" Height="20"/>
+        <!-- SubjectInfo Data Containers-->
+        <Polygon Points="1,0 1,290 705,290 705,30 155,30 145,0" 
+                 Fill="#FF141415" 
+                 HorizontalAlignment="Left" 
+                 Height="295" 
+                 Margin="232,33,0,0" 
+                 Stroke="Black" 
+                 VerticalAlignment="Top" 
+                 Width="706" 
+                 Grid.RowSpan="2"/>
+        <TextBox x:Name="WVCCIDtextbox"
+                 Text="{Binding Path=WVCCID, UpdateSourceTrigger=PropertyChanged}"
+                 HorizontalAlignment="Left" 
+                 Margin="238,38,0,0" 
+                 TextWrapping="Wrap" 
+                 VerticalAlignment="Top" 
+                 Width="132" 
+                 Height="21" 
+                 Background="#FFFFFDFD" 
+                 FontSize="14" 
+                 TextAlignment="Center" 
+                 UseLayoutRounding="True"
+                 IsReadOnly="True"/>
+        <!-- Vet Identifiers-->
+        <Rectangle Fill="#FF535357" 
+                   HorizontalAlignment="Left" 
+                   Height="78" 
+                   Margin="238,68,0,0" 
+                   Stroke="Black" 
+                   VerticalAlignment="Top" 
+                   Width="445" 
+                   Grid.RowSpan="2"/>
+        <Label Content="First Name" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="253,67,0,0" 
+               VerticalAlignment="Top" 
+               Width="91" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7"/>
+        <TextBox x:Name="FNamebx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="253,87,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=FName, UpdateSourceTrigger=PropertyChanged}"
+                 VerticalAlignment="Top" 
+                 Width="91" 
+                 IsReadOnly="True" Grid.RowSpan="2"/>
+        <Label Content="Last Name" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="353,67,0,0" 
+               VerticalAlignment="Top" 
+               Width="91" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7"/>
+        <TextBox x:Name="LNamebx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="353,87,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=LName, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="91" 
+                 IsReadOnly="True" Grid.RowSpan="2"/>
+        <Label Content="Middle Name" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="450,67,0,0" 
+               VerticalAlignment="Top" 
+               Width="70" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7"/>
+        <TextBox x:Name="MNamebx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="454,87,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=MName, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="82" 
+                 IsReadOnly="True" Grid.RowSpan="2"/>
+        <Label Content="SSN" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="542,67,0,0" 
+               VerticalAlignment="Top" 
+               Width="55" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7"/>
+        <TextBox x:Name="SSNbx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="545,87,0,0" 
+                 Text="{Binding Path=SSN, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="64" 
+                 TextAlignment="Center" 
+                 IsReadOnly="True" Grid.RowSpan="2"/>
+        <Label x:Name="Maden" 
+               Content="Maden Name" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="257,17,0,0" 
+               VerticalAlignment="Top" 
+               Width="91" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               HorizontalContentAlignment="Right" 
+               Grid.Row="1"/>
+        <TextBox x:Name="MadNamebx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="353,18,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=MadenName, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="91" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <CheckBox x:Name="DoNotCall" 
+                  Content="Do Not Call" 
+                  HorizontalAlignment="Left" 
+                  Margin="490,21,0,0" 
+                  VerticalAlignment="Top" 
+                  Foreground="#FFFF0606" 
+                  IsEnabled="False"
+                  Grid.Row="1" Height="13" Width="70"/>
+        <Button Content="Edit" 
+                HorizontalAlignment="Left" 
+                Margin="625,19,0,0" 
+                VerticalAlignment="Top" 
+                Width="51" 
+                Height="22" 
+                Click="EditSubjectInfo"
+                IsEnabled="False"
+                Grid.Row="1"/>
+        <!-- WVCC Call Status Indicators-->
+        <Rectangle Fill="#FF535357" 
+                   HorizontalAlignment="Left" 
+                   Height="55" 
+                   Margin="238,49,0,0" 
+                   Stroke="Black" 
+                   VerticalAlignment="Top" 
+                   Width="445" 
+                   Grid.Row="1"/>
+        <Label Content="Last Called" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="253,52,0,0" 
+               VerticalAlignment="Top" 
+               Width="91" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Grid.Row="1"/>
+        <TextBox x:Name="LastCalledbx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="253,72,0,0" 
+                 Text="{Binding Path=LastCalled, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="108" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <Label Content="Status" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="369,51,0,0" 
+               VerticalAlignment="Top" 
+               Width="66" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Grid.Row="1"/>
+        <TextBox x:Name="SubStatusbx"
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="369,72,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=SubStatus, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="66" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <Label Content="Call Status" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="445,51,0,0" 
+               VerticalAlignment="Top" 
+               Width="66"
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Grid.Row="1"/>
+        <TextBox x:Name="CallStatusbx"
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="445,72,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=CallStatus, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="66" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <Label Content="Last Disposition" 
+               HorizontalAlignment="Left" 
+               Margin="526,51,0,0" 
+               VerticalAlignment="Top" 
+               Foreground="White" 
+               Height="21" 
+               Grid.Row="1" Width="86"/>
+        <TextBox x:Name="LastDispobx"
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="526,72,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=LastDispo, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="144" 
+                 Grid.Row="1"/>
+        <!-- Address Space -->
+        <Rectangle  Fill="#FF535357" 
+                    HorizontalAlignment="Left" 
+                    Height="110" 
+                    Margin="238,107,0,0" 
+                    Stroke="Black" 
+                    VerticalAlignment="Top" 
+                    Width="445" 
+                    Grid.Row="1"/>
+        <Label Content="Address" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="250,105,0,0" 
+               VerticalAlignment="Top" 
+               Width="91" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Grid.Row="1"/>
+        <TextBox x:Name="Address1bx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="253,123,0,0" 
+                 Text="{Binding Path=Address1, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="179" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <Label Content="City" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="250,144,0,0" 
+               VerticalAlignment="Top" 
+               Width="91" FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Grid.Row="1"/>
+        <TextBox x:Name="Citybx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="253,162,0,0" 
+                 Text="{Binding Path=City, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="108" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <Label Content="State" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="363,144,0,0" 
+               VerticalAlignment="Top" 
+               Width="85" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Grid.Row="1"/>
+        <TextBox x:Name="Statebx"
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="365,162,0,0" 
+                 Text="{Binding Path=State, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="85" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <Label Content="ZIP" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="452,144,0,0" 
+               VerticalAlignment="Top" 
+               Width="85" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Grid.Row="1"/>
+        <TextBox x:Name="ZIPbx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="454,162,0,0" 
+                 Text="{Binding Path=ZIP, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="66" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <CheckBox x:Name="MainAddress" 
+                  Content="Main Address" 
+                  HorizontalAlignment="Left" 
+                  Margin="523,118,0,0" 
+                  VerticalAlignment="Top" 
+                  Foreground="#FFF9F7F7" 
+                  IsEnabled="False"
+                  Grid.Row="1" Height="13" Width="80"/>
+        <CheckBox Content="Mail to This Address" 
+                  HorizontalAlignment="Left" 
+                  Margin="523,138,0,0" 
+                  VerticalAlignment="Top" 
+                  Foreground="#FFFFFEFE" 
+                  Cursor="ArrowCD" 
+                  IsEnabled="False"
+                  Grid.Row="1" Height="13" Width="113"/>
+        <Label Content="of" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="266,194,0,0" 
+               VerticalAlignment="Top" 
+               Width="20" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Grid.Row="1"/>
+        <Label x:Name="SldrLbValue"
+               Content="{Binding ElementName=SldrLbValue, Path=SliderValue}" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="256,194,0,0" 
+               VerticalAlignment="Top" 
+               Width="20" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Uid="OneOf" Grid.Row="1"/>
+        <Label x:Name="SldrLbMax"
+               Content="{Binding ElementName=SldrLbMax, Path=SliderMax}" 
+               HorizontalAlignment="Left" 
+               Height="20" 
+               Margin="280,194,0,0" 
+               VerticalAlignment="Top" 
+               Width="20" 
+               FontSize="10" 
+               Foreground="#FFF9F7F7" 
+               Uid="TotalAdd" Grid.Row="1"/>
+        <Slider x:Name="AdrsSlider"
+                Minimum="0"
+                Maximum="{Binding ElementName=root, Path=SliderMax}"
+                HorizontalAlignment="Left" 
+                Height="20" 
+                Margin="347,194,0,0" 
+                VerticalAlignment="Top" 
+                Width="251" 
+                Uid="AddressSlider"
+                TickPlacement="Both"
+                Ticks="1,2,3"
+                IsSnapToTickEnabled="True"
+                ValueChanged="SliderPosition"
+                IsEnabled="true"
+                Grid.Row="1"/>
+        <Button Content="Add" 
+                HorizontalAlignment="Left" 
+                Margin="625,168,0,0" 
+                VerticalAlignment="Top" 
+                Width="51" 
+                Height="22" 
+                Click="AddAddress"
+                IsEnabled="False"
+                Grid.Row="1"/>
+        <!-- Take Call Space -->
+        <Rectangle Fill="#FF535357" 
+                   HorizontalAlignment="Left" 
+                   Height="108" 
+                   Margin="688,68,0,0" 
+                   Stroke="Black" 
+                   VerticalAlignment="Top" 
+                   Width="244" 
+                   Grid.RowSpan="2"/>
+        <Button x:Name="useThisNumbtn"
+                Content=""
+                Visibility="Hidden"
+                Margin="706,76,147,661" Grid.RowSpan="2"
+                />
+        <Button x:Name ="newRec" 
+                Content="New"
+                Visibility="Hidden"
+                
+                Height="20"
+                VerticalAlignment="Top"
+                Margin="883,17,31,0" 
+                Grid.Row="1"/>
+        <Button x:Name="TakeCallbtn"
+                Content="Take Call" 
+                HorizontalAlignment="Left" 
+                Height="34" 
+                Margin="813,76,0,0" 
+                VerticalAlignment="Top" 
+                Width="109" 
+                FontWeight="Bold" 
+                FontSize="20" 
+                IsEnabled="True" 
+                Click="TakeCall" 
+                Grid.RowSpan="2"/>
+        <Label x:Name="Searchlbl"
+               Content="Search Criteria" 
+               HorizontalAlignment="Left" 
+               Margin="706,25,0,623" 
+               Foreground="White" 
+               Visibility="Hidden"
+               Grid.Row="1" Width="81"/>
+        <TextBox x:Name="searchItem" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="706,45,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=Searchitem, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="127" 
+                 Visibility="Hidden" 
+                 Grid.Row="1"/>
+        <!--Click="SearchDB"-->
+        <Button x:Name="Searchbtn"
+                Content="Search" 
+              
+                HorizontalAlignment="Left" 
+                Height="23" 
+                Margin="847,45,0,0" 
+                VerticalAlignment="Top" 
+                Width="59" 
+                FontWeight="Bold" 
+                FontSize="12" 
+                Visibility="Hidden"
+                Grid.Row="1"/>
+        <!-- Phone Info Space -->
+        <Rectangle  Fill="#FF535357" 
+                    HorizontalAlignment="Left" 
+                    Height="136" 
+                    Margin="688,80,0,0" 
+                    Stroke="Black" 
+                    VerticalAlignment="Top" 
+                    Width="244" 
+                    Grid.Row="1"/>
+        <Label Content="Phone Number" 
+               HorizontalAlignment="Left" 
+               Margin="733,86,0,0" 
+               VerticalAlignment="Top" 
+               Foreground="White" 
+               Grid.Row="1" Height="23" Width="82"/>
+        <TextBox x:Name="phoneNumbx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="733,104,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=PhoneNum, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="120" 
+                 IsEnabled="False"
+                 Grid.Row="1"/>
+        <TextBox x:Name="TZonebx" 
+                 HorizontalAlignment="Left" 
+                 Height="23" 
+                 Margin="863,103,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=TZone, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="28" 
+                 RenderTransformOrigin="0.464,0.087" 
+                 IsEnabled="False"
+                 Grid.Row="1"/>
+        <Label Content="TZ" 
+               HorizontalAlignment="Left" 
+               Margin="863,85,0,0" 
+               VerticalAlignment="Top" 
+               Foreground="White" 
+               Cursor="ArrowCD" Grid.Row="1" Height="23" Width="23"/>
+        <CheckBox Content="Main Number" 
+                  HorizontalAlignment="Left" 
+                  Margin="753,133,0,0" 
+                  VerticalAlignment="Top" 
+                  Foreground="#FFF9F7F7" 
+                  RenderTransformOrigin="0.3,0.615" 
+                  IsEnabled="False"
+                  Grid.Row="1" Height="13" Width="80"/>
+        <Button Content="Add a Number" 
+                HorizontalAlignment="Left" 
+                Margin="706,179,0,0" 
+                VerticalAlignment="Top" 
+                Width="86" 
+                Height="22" 
+                IsEnabled="False"
+                Grid.Row="1"/>
+        <Button x:Name="MakeCallbtn"
+                Click="MakeCall"
+                Content="Make Call" 
+                HorizontalAlignment="Left" 
+                Height="34" 
+                Margin="813,172,0,0" 
+                VerticalAlignment="Top" 
+                Width="109" 
+                FontWeight="Bold" 
+                FontSize="20" 
+                IsEnabled="True" 
+                Grid.Row="1"/>
+        <!-- Disposition Controls -->
+        <GroupBox Header="Dispositions" 
+                  HorizontalAlignment="Left" 
+                  Height="147" 
+                  Margin="10,235,0,0" 
+                  VerticalAlignment="Top" 
+                  Width="928" 
+                  BorderBrush="#FF151515" 
+                  Background="#FF535357" 
+                  Foreground="White" 
+                  IsEnabled="False"
+                  Grid.Row="1">
+            <StackPanel Orientation="Horizontal" 
+                        Margin="5,5,5,2">
+                <StackPanel Orientation="Vertical" 
+                            Margin="0,0,0,2">
+                    <CheckBox Content="VM - Message Left" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="VM - No Message Left" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="VM - No Message Left" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="No Answer, No Message" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Busy" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Hang-up" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Disconnected" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Wrong Number" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" 
+                            Margin="10,0,0,2">
+                    <CheckBox Content="Veteran Will Call Back" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Answered by another - Message Left" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Answered by another - No Message" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Answered by another - New #" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Third Party" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Refusal" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Refusal - Accepting Mailing" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Not a Veteran" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" 
+                            Margin="10,0,0,2">
+                    <CheckBox Content="Deceased" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Active Duty - No Mail" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Active Duty - Mailing" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Blocked Number" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Fax" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Business Phone" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Language Problem" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Prank Call" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" 
+                            Margin="10,0,0,2">
+                    <CheckBox Content="Unable" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Information Call" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Referral Only" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Tech problem - Client side" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Tech problem - Caller side" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Emergency Stop" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="xFer to Crisis Line" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="xFer to Homeless Line" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" 
+                            Margin="10,0,0,2">
+                    <CheckBox Content="Completed initial Call" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Completed Follow-up" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Information Call" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Referral Only" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="xFer to Care Giver" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="xFer to Domestic Violence" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                    <CheckBox Content="Other - New Record" 
+                              Margin="0,0,0,2" 
+                              Foreground="White" 
+                              Background="White"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <Button x:Name="SetDispo" 
+                Content="Set Disposition" 
+                HorizontalAlignment="Left" 
+                Height="34" 
+                Margin="799,291,0,0" 
+                VerticalAlignment="Top" 
+                Width="125" 
+                FontWeight="Bold" 
+                FontSize="14" 
+                IsEnabled="False" 
+                Grid.Row="1"/>
+        <!-- Call Note -->
+        <Rectangle Fill="#FF535357" 
+                   HorizontalAlignment="Left" 
+                   Height="148" 
+                   Margin="10,401,0,0" 
+                   Stroke="Black" 
+                   VerticalAlignment="Top" 
+                   Width="608" 
+                   Grid.Row="1"/>
+        <TextBox x:Name="CallNoteHistorybx" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                 HorizontalAlignment="Left" 
+                 Height="132" 
+                 Margin="22,409,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=CallNoteHistory, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="585" 
+                 UndoLimit="0" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <Label Content="Call Notes:" 
+               HorizontalAlignment="Left" 
+               Margin="9,386,0,0" 
+               VerticalAlignment="Top" 
+               FontWeight="Bold" 
+               FontSize="14" 
+               Foreground="White" 
+               Grid.Row="1" Height="27" Width="86"/>
+        <Rectangle Fill="#FF535357" 
+                   HorizontalAlignment="Left" 
+                   Height="37" 
+                   Margin="634,401,0,0" 
+                   Stroke="Black" 
+                   VerticalAlignment="Top" 
+                   Width="305" 
+                   Grid.Row="1"/>
+        <TextBox x:Name="AutoSummarybx" 
+                 HorizontalAlignment="Left" 
+                 Height="20" 
+                 Margin="643,409,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=AutoSummary, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="289" 
+                 UndoLimit="0" 
+                 IsReadOnly="True" 
+                 Grid.Row="1"/>
+        <Rectangle Fill="#FF535357" 
+                   HorizontalAlignment="Left" 
+                   Height="106" 
+                   Margin="634,443,0,0" 
+                   Stroke="Black" 
+                   VerticalAlignment="Top" 
+                   Width="305" 
+                   Grid.Row="1"/>
+        <TextBox x:Name="CallerNotebx" 
+                 HorizontalAlignment="Left" 
+                 Height="88" 
+                 Margin="643,453,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="{Binding Path=CallerNote, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalAlignment="Top" 
+                 Width="289" 
+                 IsEnabled="False"
+                 Grid.Row="1"/>
+        <Button Content="Close Record" 
+                HorizontalAlignment="Left" 
+                Margin="792,557,0,0" 
+                VerticalAlignment="Top" 
+                Width="146" 
+                FontWeight="Bold" 
+                FontSize="20" 
+                Height="35" 
+                IsEnabled="False" 
+                Grid.Row="1"/>
+        <Button x:Name="Quit"
+                Content="Quit" 
+                Tag="QuitApp"
+                HorizontalAlignment="Left" 
+                Margin="22,557,0,0" 
+                VerticalAlignment="Top" 
+                Width="75" 
+                FontSize="18" Height="35"
+                Click="QuitBtnClk" Grid.Row="1"/>
+        <Rectangle x:Name="BlockingAlertBG"
+                   Fill="Aquamarine"
+                   Visibility="Hidden"
+                   Height="658" 
+                   Grid.RowSpan="2" 
+                   VerticalAlignment="Top"
+                   Margin="10,34,10,0"
+                   />
+        <Label x:Name="BlockingAlert" 
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Content=""
+               Visibility="Hidden"
+               Margin="98,196,100,378"
+               FontWeight="ExtraBold"
+               FontSize="72"
+               FontStretch="Expanded" 
+               Grid.Row="1" 
+               Width="755" Height="96"
+               />
+        <!-- Status bar-->
+        <StatusBar HorizontalAlignment="Left" 
+                   Height="23" 
+                   Margin="0,597,0,0" 
+                   VerticalAlignment="Top" 
+                   Width="953" Grid.Row="1">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="74" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="140" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem >
+                <Label Content="User Status:" 
+                       VerticalAlignment="Center" 
+                       Height="23" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="2">
+                <TextBlock x:Name="UserStatusbx" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Right" 
+                           Text="{Binding Path=UserStatus, UpdateSourceTrigger=PropertyChanged}" />
+            </StatusBarItem>
+            <Separator Grid.Column="3" />
+            <StatusBarItem Grid.Column="4" 
+                           HorizontalAlignment="Center">
+                <TextBlock x:Name="ProcessNotificationbx" 
+                           VerticalAlignment="Center" 
+                           Text="{Binding Path=ProcessNotification, UpdateSourceTrigger=PropertyChanged}" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="5" 
+                           HorizontalAlignment="Center" 
+                           Foreground="#FF2FDA3F">
+                <ProgressBar x:Name="Progresspb"
+                             Value="{Binding Path=Progress, UpdateSourceTrigger=PropertyChanged}" 
+                             Height="8" 
+                             Width="120" 
+                             Foreground="#FF199E0C"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
